@@ -25,22 +25,22 @@ class Watchdog(object):
         self._actions = []
         for action in config['actions']:
             self._actions.append(ActionType.create(action))
-        
-    
+
+
     def _start_monitors(self):
         for monitor in self._monitors:
             monitor.start()
-            
+
     def _stop_monitors(self, restart_after_timeout=False):
         for monitor in self._monitors:
             monitor.stop()
-            
+
     def _check(self):
         for monitor in self._monitors:
             if monitor.check():
                 return True
         return False
-    
+
     def _execute(self):
         rospy.logwarn("Executing '{}' watchdog.".format(self._name))
         self.shutdown()
@@ -50,22 +50,22 @@ class Watchdog(object):
             self._restart_timer =  Timer(self._restart_timeout,
                                          self.run)
             self._restart_timer.start()
-    
+
     def _pause(self):
         self._check_timer.cancel()
-    
+
     def run(self):
         rospy.loginfo("Starting '{}' watchdog".format(self._name))
         self._executable = True
         self._start_monitors()
-    
+
     def shutdown(self):
         rospy.loginfo("Stopping '{}' watchdog".format(self._name))
         self._executable = False
         self._stop_monitors()
         if self._restart_timer is not None:
             self._restart_timer.cancel()
-            
+
     def execute(self):
         with self._executing:
             if self._executable:

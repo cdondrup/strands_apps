@@ -1,0 +1,10 @@
+<launch>
+  <arg name="config" default="$(find watchdog_node)/config/config.yaml" />
+  <arg name="pw_file" default="$(find watchdog_node)/email_pw.txt" />
+
+  <node name="watchdog_node" pkg="watchdog_node" type="watchdog_node" output="screen" respawn="true">
+    <param name="config" type="string" value="$(arg config)"/>
+    <param name="pw_file" type="string" value="$(arg pw_file)"/>
+  </node>
+
+</launch>

@@ -1,4 +1,4 @@
-from . import ActionType  
+from . import ActionType
 import smtplib
 import rospy
 
@@ -10,17 +10,23 @@ class SendEmail(ActionType):
                    ("message", "The message body of the email."),
                    ("server", "The SMTP server."),
                    ("port", "The port the SMTP server uses.")]
-    
+
     def execute(self):
         try:
-            msg = ("From: %s\r\nTo: %s\r\n\r\n%s"
-                   % (self.from_address, ", ".join(self.to_addresses),
+            msg = ("From: %s\r\nTo: %s\r\nSubject: %s\n\n%s"
+                   % (self.from_address, ", ".join(self.to_addresses), self.subject,
                       self.message))
-            
+
+            with open(rospy.get_param("~pw_file"), "r") as f:
+                self.pw = f.readline()
+
             server = smtplib.SMTP(self.server, self.port)
-            server.set_debuglevel(False)
+            server.starttls()
+            server.login(self.from_address , self.pw)
+            server.set_debuglevel(True)
             server.sendmail(self.from_address, self.to_addresses, msg)
             server.quit()
+            rospy.loginfo("Sent email to {}".format(', '.join(self.to_addresses)))
         except Exception, e:
             rospy.logerr("Could not send email: {}".format(e))
-    
+

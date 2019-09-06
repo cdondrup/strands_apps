@@ -1,0 +1,17 @@
+- name: Intel Camera Node Watchdog
+  description: Monitors the camera driver node to ensure still publishing. If not, kills it.
+  restart_timeout: 600
+  monitors:
+      - monitor_type: TopicAliveInterval
+        topic: /camera/color/camera_info
+        max_duration: 5
+        monitor_duration: 20
+        monitor_interval: 600
+  actions:
+      - action_type: SendEmail
+        subject: "The intel camera node has stopped"
+        to_addresses:  [a.vanzo@hw.ac.uk, c.dondrup@hw.ac.uk, olivier.canevet@idiap.ch]
+        from_address: pepper.ideapark@gmail.com
+        message: "The camera node has stopped working. It might have restarted the jetson automatically. Please check."
+        server: smtp.gmail.com
+        port: 587

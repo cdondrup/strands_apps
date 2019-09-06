@@ -11,18 +11,18 @@ class TopicAlive(MonitorType):
     config_keys = [('topic', "The topic to monitor"),
                    ('max_duration', "The maximum number of seconds to accept "
                     "not receiving a message")]
-    
+
     def __init__(self, monitor_config, invalid_cb):
         super(TopicAlive, self).__init__(monitor_config, invalid_cb)
         self.max_duration = rospy.Duration(self.max_duration)
-        
+
     def start(self):
         self._validity_timer = Timer(self.max_duration.to_sec(), self.timeout_cb)
         self._last_time = None
         self._topic_sub = None
         self._retry_timer = None
         MsgClass, topic, _func = rostopic.get_topic_class(self.topic)
-        
+
         if topic is not None:
             self._topic_sub = rospy.Subscriber(topic, MsgClass, self.topic_cb)
             self._last_time = rospy.Time.now()
@@ -42,7 +42,7 @@ class TopicAlive(MonitorType):
 
     def topic_cb(self, msg):
         self._last_time = rospy.Time.now()
-        
+
     def timeout_cb(self):
         duration =  rospy.Time.now() - self._last_time
         if duration > self.max_duration:

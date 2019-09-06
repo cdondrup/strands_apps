@@ -1,0 +1,447 @@
+#IDIAP
+
+- name: intel_camera_watchdog
+  description: Monitors the camera driver node to ensure still publishing. If not, sends an email.
+  restart_timeout: 600
+  monitors:
+      - monitor_type: TopicAliveInterval
+        topic: /camera/color/camera_info
+        max_duration: 5
+        monitor_duration: 20
+        monitor_interval: 600
+  actions:
+      - action_type: SendEmail
+        subject: "[WP2] /camera/color/info has stopped"
+        to_addresses: [tech@mummer-project.eu] 
+        from_address: pepper.ideapark@gmail.com
+        message: "Please check."
+        server: smtp.gmail.com
+        port: 587
+
+- name: face_tracker_watchdog
+  description: Monitors the face tracker from WP2 to ensure still publishing. If not, sends an email.
+  restart_timeout: 600
+  monitors:
+      - monitor_type: TopicAliveInterval
+        topic: /wp2/track
+        max_duration: 5
+        monitor_duration: 20
+        monitor_interval: 600
+  actions:
+      - action_type: SendEmail
+        subject: "[WP2] /wp2/track has stopped"
+        to_addresses: [tech@mummer-project.eu] 
+        from_address: pepper.ideapark@gmail.com
+        message: "Please check."
+        server: smtp.gmail.com
+        port: 587
+
+
+# GLASGOW
+
+- name: attention_analyser_watchdog
+  description: Monitors the attention analyser from WP3 to ensure still publishing. If not, kills it and sends an email.
+  restart_timeout: 600
+  monitors:
+      - monitor_type: TopicAliveInterval
+        topic: /ssp_fusion/attention_array
+        max_duration: 5
+        monitor_duration: 20
+        monitor_interval: 600
+  actions:
+      - action_type: SendEmail
+        subject: "[WP3] /ssp_fusion/attention_array has stopped"
+        to_addresses: [tech@mummer-project.eu] 
+        from_address: pepper.ideapark@gmail.com
+        message: "The node has been respawned, but please check anyway."
+        server: smtp.gmail.com
+        port: 587
+      - action_type: KillNode
+        node_name: /attention_analyser_mm
+
+
+# BASE
+
+- name: battery_watchdog
+  description: Monitors the battery topic to ensure the naoqi driver is working correctly. If not, kills the driver and sends an email.
+  restart_timeout: 600
+  monitors:
+      - monitor_type: TopicAliveInterval
+        topic: /naoqi_driver_node/battery
+        max_duration: 5
+        monitor_duration: 20
+        monitor_interval: 600
+  actions:
+      - action_type: SendEmail
+        subject: "[WP6] /naoqi_driver_node/battery has stopped"
+        to_addresses: [tech@mummer-project.eu] 
+        from_address: pepper.ideapark@gmail.com
+        message: "The node has been respawned, but please check anyway."
+        server: smtp.gmail.com
+        port: 587
+      - action_type: KillNode
+        node_name: /naoqi_driver_node
+
+- name: audio_watchdog
+  description: Monitors the audio topic to ensure the naoqi driver is working correctly. If not, kills the driver and sends an email.
+  restart_timeout: 600
+  monitors:
+      - monitor_type: TopicAliveInterval
+        topic: /naoqi_driver_node/audio
+        max_duration: 5
+        monitor_duration: 20
+        monitor_interval: 600
+  actions:
+      - action_type: SendEmail
+        subject: "[WP6] /naoqi_driver_node/audio has stopped"
+        to_addresses: [tech@mummer-project.eu] 
+        from_address: pepper.ideapark@gmail.com
+        message: "The node has been respawned, but please check anyway."
+        server: smtp.gmail.com
+        port: 587
+      - action_type: KillNode
+        node_name: /naoqi_driver_node
+
+
+# HW
+
+- name: noise_filter_node_watchdog
+  description: Monitors the /noise_filter_node/result topic to ensure it is working correctly. If not, kills the node and sends an email.
+  restart_timeout: 600
+  monitors:
+      - monitor_type: TopicAliveInterval
+        topic: /noise_filter_node/result
+        max_duration: 5
+        monitor_duration: 20
+        monitor_interval: 600
+  actions:
+      - action_type: SendEmail
+        subject: "[WP4] /noise_filter_node/result has stopped"
+        to_addresses: [tech@mummer-project.eu]
+        from_address: pepper.ideapark@gmail.com
+        message: "The node has been respawned, but please check anyway."
+        server: smtp.gmail.com
+        port: 587
+      - action_type: KillNode
+        node_name: /noise_filter_node
+
+- name: mummer_ds_beamforming_watchdog
+  description: Monitors the /mummer_ds_beamforming/result topic to ensure it is working correctly. If not, kills the node and sends an email.
+  restart_timeout: 600
+  monitors:
+      - monitor_type: TopicAliveInterval
+        topic: /mummer_ds_beamforming/result
+        max_duration: 5
+        monitor_duration: 20
+        monitor_interval: 600
+  actions:
+      - action_type: SendEmail
+        subject: "[WP4] /mummer_ds_beamforming/result has stopped"
+        to_addresses: [tech@mummer-project.eu]
+        from_address: pepper.ideapark@gmail.com
+        message: "The node has been respawned, but please check anyway."
+        server: smtp.gmail.com
+        port: 587
+      - action_type: KillNode
+        node_name: /mummer_ds_beamforming
+
+- name: mummer_asr_watchdog
+  description: Monitors the /mummer_asr/is_alive topic to ensure it is working correctly. If not, kills the node and sends an email.
+  restart_timeout: 600
+  monitors:
+      - monitor_type: TopicAliveInterval
+        topic: /mummer_asr/is_alive
+        max_duration: 5
+        monitor_duration: 20
+        monitor_interval: 600
+  actions:
+      - action_type: SendEmail
+        subject: "[WP4] /mummer_asr/is_alive has stopped"
+        to_addresses: [tech@mummer-project.eu]
+        from_address: pepper.ideapark@gmail.com
+        message: "The node has been respawned, but please check anyway."
+        server: smtp.gmail.com
+        port: 587
+      - action_type: KillNode
+        node_name: /mummer_asr
+
+- name: end_of_speech_watchdog
+  description: Monitors the /end_of_speech/is_alive topic to ensure it is working correctly. If not, kills the node and sends an email.
+  restart_timeout: 600
+  monitors:
+      - monitor_type: TopicAliveInterval
+        topic: /end_of_speech/is_alive
+        max_duration: 5
+        monitor_duration: 20
+        monitor_interval: 600
+  actions:
+      - action_type: SendEmail
+        subject: "[WP4] /end_of_speech/is_alive has stopped"
+        to_addresses: [tech@mummer-project.eu]
+        from_address: pepper.ideapark@gmail.com
+        message: "The node has been respawned, but please check anyway."
+        server: smtp.gmail.com
+        port: 587
+      - action_type: KillNode
+        node_name: /end_of_speech
+
+- name: mummer_dialogue_say_watchdog
+  description: Monitors the /mummer_dialogue_say/is_alive topic to ensure it is working correctly. If not, kills the node and sends an email.
+  restart_timeout: 600
+  monitors:
+      - monitor_type: TopicAliveInterval
+        topic: /mummer_dialogue_say/is_alive
+        max_duration: 5
+        monitor_duration: 20
+        monitor_interval: 600
+  actions:
+      - action_type: SendEmail
+        subject: "[WP4] /mummer_dialogue_say/is_alive has stopped"
+        to_addresses: [tech@mummer-project.eu]
+        from_address: pepper.ideapark@gmail.com
+        message: "The node has been respawned, but please check anyway."
+        server: smtp.gmail.com
+        port: 587
+      - action_type: KillNode
+        node_name: /mummer_dialogue_say
+
+- name: mummer_dialogue_translator_watchdog
+  description: Monitors the /mummer_dialogue_translator/is_alive topic to ensure it is working correctly. If not, kills the node and sends an email.
+  restart_timeout: 600
+  monitors:
+      - monitor_type: TopicAliveInterval
+        topic: /mummer_dialogue_translator/is_alive
+        max_duration: 5
+        monitor_duration: 20
+        monitor_interval: 600
+  actions:
+      - action_type: SendEmail
+        subject: "[WP4] /mummer_dialogue_translator/is_alive has stopped"
+        to_addresses: [tech@mummer-project.eu]
+        from_address: pepper.ideapark@gmail.com
+        message: "The node has been respawned, but please check anyway."
+        server: smtp.gmail.com
+        port: 587
+      - action_type: KillNode
+        node_name: /mummer_dialogue_translator
+
+- name: pepper_recipe_controller_watchdog
+  description: Monitors the /pepper_recipe_controller/is_alive topic to ensure it is working correctly. If not, kills the node and sends an email.
+  restart_timeout: 600
+  monitors:
+      - monitor_type: TopicAliveInterval
+        topic: /pepper_recipe_controller/is_alive
+        max_duration: 5
+        monitor_duration: 20
+        monitor_interval: 600
+  actions:
+      - action_type: SendEmail
+        subject: "[WP4] /pepper_recipe_controller/is_alive has stopped"
+        to_addresses: [tech@mummer-project.eu]
+        from_address: pepper.ideapark@gmail.com
+        message: "The node has been respawned, but please check anyway."
+        server: smtp.gmail.com
+        port: 587
+      - action_type: KillNode
+        node_name: /pepper_recipe_controller
+
+- name: alana_node_watchdog
+  description: Monitors the /alana_node/is_alive topic to ensure it is working correctly. If not, kills the node and sends an email.
+  restart_timeout: 600
+  monitors:
+      - monitor_type: TopicAliveInterval
+        topic: /alana_node/is_alive
+        max_duration: 5
+        monitor_duration: 20
+        monitor_interval: 600
+  actions:
+      - action_type: SendEmail
+        subject: "[WP4] /alana_node/is_alive has stopped"
+        to_addresses: [tech@mummer-project.eu]
+        from_address: pepper.ideapark@gmail.com
+        message: "The node has been respawned, but please check anyway."
+        server: smtp.gmail.com
+        port: 587
+      - action_type: KillNode
+        node_name: /alana_node
+
+- name: dialogue_arbiter_watchdog
+  description: Monitors the /dialogue_arbiter/is_alive topic to ensure it is working correctly. If not, kills the node and sends an email.
+  restart_timeout: 600
+  monitors:
+      - monitor_type: TopicAliveInterval
+        topic: /dialogue_arbiter/is_alive
+        max_duration: 5
+        monitor_duration: 20
+        monitor_interval: 600
+  actions:
+      - action_type: SendEmail
+        subject: "[WP4] /dialogue_arbiter/is_alive has stopped"
+        to_addresses: [tech@mummer-project.eu]
+        from_address: pepper.ideapark@gmail.com
+        message: "The node has been respawned, but please check anyway."
+        server: smtp.gmail.com
+        port: 587
+      - action_type: KillNode
+        node_name: /dialogue_arbiter
+
+- name: filter_routes_watchdog
+  description: Monitors the /filter_routes/is_alive topic to ensure it is working correctly. If not, kills the node and sends an email.
+  restart_timeout: 600
+  monitors:
+      - monitor_type: TopicAliveInterval
+        topic: /filter_routes/is_alive
+        max_duration: 5
+        monitor_duration: 20
+        monitor_interval: 600
+  actions:
+      - action_type: SendEmail
+        subject: "[WP4] /filter_routes/is_alive has stopped"
+        to_addresses: [tech@mummer-project.eu]
+        from_address: pepper.ideapark@gmail.com
+        message: "The node has been respawned, but please check anyway."
+        server: smtp.gmail.com
+        port: 587
+      - action_type: KillNode
+        node_name: /filter_routes
+
+- name: recipe_planner_watchdog
+  description: Monitors the /recipe_planner/is_alive topic to ensure it is working correctly. If not, kills the node and sends an email.
+  restart_timeout: 600
+  monitors:
+      - monitor_type: TopicAliveInterval
+        topic: /recipe_planner/is_alive
+        max_duration: 5
+        monitor_duration: 20
+        monitor_interval: 600
+  actions:
+      - action_type: SendEmail
+        subject: "[WP4] /recipe_planner/is_alive has stopped"
+        to_addresses: [tech@mummer-project.eu]
+        from_address: pepper.ideapark@gmail.com
+        message: "The node has been respawned, but please check anyway."
+        server: smtp.gmail.com
+        port: 587
+      - action_type: KillNode
+        node_name: /recipe_planner
+
+- name: route_description_generation_watchdog
+  description: Monitors the /route_description_generation/is_alive topic to ensure it is working correctly. If not, kills the node and sends an email.
+  restart_timeout: 600
+  monitors:
+      - monitor_type: TopicAliveInterval
+        topic: /route_description_generation/is_alive
+        max_duration: 5
+        monitor_duration: 20
+        monitor_interval: 600
+  actions:
+      - action_type: SendEmail
+        subject: "[WP4] /route_description_generation/is_alive has stopped"
+        to_addresses: [tech@mummer-project.eu]
+        from_address: pepper.ideapark@gmail.com
+        message: "The node has been respawned, but please check anyway."
+        server: smtp.gmail.com
+        port: 587
+      - action_type: KillNode
+        node_name: /route_description_generation
+
+- name: route_generation_watchdog
+  description: Monitors the /route_generation/is_alive topic to ensure it is working correctly. If not, kills the node and sends an email.
+  restart_timeout: 600
+  monitors:
+      - monitor_type: TopicAliveInterval
+        topic: /route_generation/is_alive
+        max_duration: 5
+        monitor_duration: 20
+        monitor_interval: 600
+  actions:
+      - action_type: SendEmail
+        subject: "[WP4] /route_generation/is_alive has stopped"
+        to_addresses: [tech@mummer-project.eu]
+        from_address: pepper.ideapark@gmail.com
+        message: "The node has been respawned, but please check anyway."
+        server: smtp.gmail.com
+        port: 587
+      - action_type: KillNode
+        node_name: /route_generation
+
+- name: rpn_supervision_server_watchdog
+  description: Monitors the /rpn_supervision_server/is_alive topic to ensure it is working correctly. If not, kills the node and sends an email.
+  restart_timeout: 600
+  monitors:
+      - monitor_type: TopicAliveInterval
+        topic: /rpn_supervision_server/is_alive
+        max_duration: 5
+        monitor_duration: 20
+        monitor_interval: 600
+  actions:
+      - action_type: SendEmail
+        subject: "[WP4] /rpn_supervision_server/is_alive has stopped"
+        to_addresses: [tech@mummer-project.eu]
+        from_address: pepper.ideapark@gmail.com
+        message: "The node has been respawned, but please check anyway."
+        server: smtp.gmail.com
+        port: 587
+      - action_type: KillNode
+        node_name: /rpn_supervision_server
+
+# LAAS
+
+- name: current_facts_watchdog
+  description: Monitors the /base/current_facts topic to ensure it is working correctly. If not, sends an email.
+  restart_timeout: 600
+  monitors:
+      - monitor_type: TopicAliveInterval
+        topic: /base/current_facts
+        max_duration: 5
+        monitor_duration: 20
+        monitor_interval: 600
+  actions:
+      - action_type: SendEmail
+        subject: "[WP5] /base/current_facts has stopped"
+        to_addresses:  [tech@mummer-project.eu]
+        from_address: pepper.ideapark@gmail.com
+        message: "Please check."
+        server: smtp.gmail.com
+        port: 587
+
+- name: point_at_watchdog
+  description: Monitors the /deictic_gestures/point_at/status topic to ensure it is working correctly. If not, kills the node and sends an email.
+  restart_timeout: 600
+  monitors:
+      - monitor_type: TopicAliveInterval
+        topic: /deictic_gestures/point_at/status
+        max_duration: 3600
+        monitor_duration: 3600
+        monitor_interval: 3600
+  actions:
+      - action_type: SendEmail
+        subject: "[WP5] /deictic_gestures/point_at/status has stopped"
+        to_addresses:  [tech@mummer-project.eu]
+        from_address: pepper.ideapark@gmail.com
+        message: "The node has been respawned, but please check anyway."
+        server: smtp.gmail.com
+        port: 587
+      - action_type: KillNode
+        node_name: /point_at_srv
+
+- name: look_at_watchdog
+  description: Monitors the /deictic_gestures/look_at/status topic to ensure it is working correctly. If not, kills the node and sends an email.
+  restart_timeout: 600
+  monitors:
+      - monitor_type: TopicAliveInterval
+        topic: /deictic_gestures/look_at/status
+        max_duration: 3600
+        monitor_duration: 3600
+        monitor_interval: 3600
+  actions:
+      - action_type: SendEmail
+        subject: "[WP5] /deictic_gestures/look_at/status has stopped"
+        to_addresses:  [tech@mummer-project.eu]
+        from_address: pepper.ideapark@gmail.com
+        message: "The node has been respawned, but please check anyway."
+        server: smtp.gmail.com
+        port: 587
+      - action_type: KillNode
+        node_name: /look_at_srv
+

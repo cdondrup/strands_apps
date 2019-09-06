@@ -9,8 +9,8 @@
       - action_type: KillNode
         node_name: /camera_node
       - action_type: SendEmail
-        to_addresses:  [hello@world.com]
-        from_address: watchdog@world.com
+        to_addresses:  [a.vanzo@hw.ac.uk, c.dondrup@hw.ac.uk]
+        from_address: pepper.ideapark@gmail.com
         message: "Hello World"
-        server: unsecure.smtp.server.com
-        port: 25
+        server: smtp.gmail.com
+        port: 587
