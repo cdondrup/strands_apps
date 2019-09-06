@@ -36,30 +36,6 @@
         server: smtp.gmail.com
         port: 587
 
-
-# GLASGOW
-
-- name: attention_analyser_watchdog
-  description: Monitors the attention analyser from WP3 to ensure still publishing. If not, kills it and sends an email.
-  restart_timeout: 600
-  monitors:
-      - monitor_type: TopicAliveInterval
-        topic: /ssp_fusion/attention_array
-        max_duration: 5
-        monitor_duration: 20
-        monitor_interval: 600
-  actions:
-      - action_type: SendEmail
-        subject: "[WP3] /ssp_fusion/attention_array has stopped"
-        to_addresses: [tech@mummer-project.eu] 
-        from_address: pepper.ideapark@gmail.com
-        message: "The node has been respawned, but please check anyway."
-        server: smtp.gmail.com
-        port: 587
-      - action_type: KillNode
-        node_name: /attention_analyser_mm
-
-
 # BASE
 
 - name: battery_watchdog
