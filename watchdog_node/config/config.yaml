@@ -45,9 +45,9 @@
   monitors:
       - monitor_type: TopicAliveInterval
         topic: /ssp_fusion/attention_array
-        max_duration: 5
-        monitor_duration: 20
-        monitor_interval: 600
+        max_duration: 3600
+        monitor_duration: 3600
+        monitor_interval: 3600
   actions:
       - action_type: SendEmail
         subject: "[WP3] /ssp_fusion/attention_array has stopped"
